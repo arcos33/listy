@@ -19,10 +19,9 @@ class ProfileDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var forceSensitiveCell: UITableViewCell!
     @IBOutlet weak var birthdateCell: UITableViewCell!
-    @IBOutlet weak var affiliation: UILabel!
-    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var affiliationLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profilePictureImageView: UIImageView!
-    
     @IBOutlet weak var birthdateContentView: UIView!
     @IBOutlet weak var forceSensitiveContentView: UIView!
     
@@ -32,10 +31,10 @@ class ProfileDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let _affiliation = individual?.affiliation {
-            setBackgroundColorFor(affiliation: _affiliation)
-            affiliation.text = _affiliation
-        }
+        populateOutlets()
+    }
+    
+    private func populateOutlets() {
         birthdateCell.textLabel?.text = individual?.birthdate
         forceSensitiveCell.textLabel?.text = "Force Sensitive"
         forceSensitiveCell.imageView?.image = UIImage(imageLiteralResourceName: "force-Jedi-symbol")
@@ -52,12 +51,15 @@ class ProfileDetailTableViewController: UITableViewController {
             let image = UIImage(data: imageData)
             profilePictureImageView.image = image
         }
-        name.text = individual?.name
+        nameLabel.text = individual?.name
         
-        // Do any additional setup after loading the view.
+        if let _affiliation = individual?.affiliation {
+            setBackgroundColorFor(affiliation: _affiliation)
+            affiliationLabel.text = _affiliation
+        }
     }
     
-    func setBackgroundColorFor(affiliation: String) {
+    private func setBackgroundColorFor(affiliation: String) {
         if affiliation == "FIRST_ORDER" {
             setBackgroundColor(color: .white)
         } else if affiliation == "SITH" {

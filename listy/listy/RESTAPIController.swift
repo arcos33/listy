@@ -44,7 +44,6 @@ class RESTAPIController {
                             self.parseJson(data: data as NSData, completion: {
                                 completion()
                             })
-                            
                         }
                     default:
                         print("HTTPResponse code: \(httpResponse.statusCode) Class:\(#file)\n Line:\(#line)")
@@ -56,7 +55,6 @@ class RESTAPIController {
     }
     
     func parseJson(data: NSData, completion: @escaping () -> ()) {
-        
         do {
             let jsonResponse = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments)
             let jsonDict = jsonResponse as! Dictionary<String, AnyObject>
@@ -73,9 +71,10 @@ class RESTAPIController {
                     let imageURL = dict["profilePicture"] as? String,
                     let forceSensitive = dict["forceSensitive"] as? Bool,
                     let affiliation = dict["affiliation"] as? String {
-                    
-                    getImage(imageURL: imageURL) { [weak self] imageData in
-                        self?.saveIndividualRecordToCoreData(id: id, name: "\(firstName) \(lastName)", birthdate: birthdate, imageData: imageData, imageURL: imageURL, forceSensitive: forceSensitive, affiliation: affiliation)
+                    let name = "\(firstName) \(lastName)"
+                    getImageWithURL(imageURL: imageURL) { imageData in
+                            let coreDataController = CoreDataController()
+                            coreDataController.saveRecord(id: id, name: name, birthdate: birthdate, imageData: imageData, imageURL: imageURL, forceSensitive: forceSensitive, affiliation: affiliation)
                         group.leave()
                     }
                 }
@@ -89,46 +88,7 @@ class RESTAPIController {
         }
     }
     
-    private func saveIndividualRecordToCoreData(id: Int,
-                                                name: String,
-                                                birthdate: String,
-                                                imageData: NSData,
-                                                imageURL: String,
-                                                forceSensitive: Bool,
-                                                affiliation: String) {
-        let managedContext = appDelegate.persistentContainer.viewContext
-        if let individualEntity = NSEntityDescription.entity(forEntityName: "Individual", in: managedContext) {
-            let individual = NSManagedObject(entity: individualEntity, insertInto: managedContext)
-            individual.setValue(id, forKey: "id")
-            individual.setValue(name, forKey: "name")
-            individual.setValue(birthdate, forKey: "birthdate")
-            individual.setValue(imageData, forKey: "profilePicture")
-            individual.setValue(imageURL, forKey: "imageURL")
-            individual.setValue(forceSensitive, forKey: "forceSensitive")
-            individual.setValue(affiliation, forKey: "affiliation")
-            
-            do {
-                try managedContext.save()
-                NotificationCenter.default.post(name: .didFinishSavingObject, object: nil, userInfo: nil)
-            } catch let error as NSError {
-                print("Could not save: \(error), \(error.userInfo)")
-            }
-        }
-    }
-    
-    private func getAffiliationFromString(str: String) -> Affiliation{
-        if str == "FIRST_ORDER" {
-            return Affiliation.firstOrder
-        } else if str == "SITH" {
-            return Affiliation.sith
-        } else if str == "RESISTANCE" {
-            return Affiliation.resistance
-        } else {
-            return Affiliation.jedi
-        }
-    }
-    
-    func getImage(imageURL: String, completion: @escaping (NSData) -> ()) {
+    func getImageWithURL(imageURL: String, completion: @escaping (NSData) -> ()) {
         let urlString = imageURL
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(url: url as URL)

@@ -171,12 +171,12 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="affiliation" destination="pUD-uc-pze" id="DW6-vM-XFG"/>
+                        <outlet property="affiliationLabel" destination="pUD-uc-pze" id="vsG-JD-GF0"/>
                         <outlet property="birthdateCell" destination="rDp-FG-9zg" id="oep-as-eRK"/>
                         <outlet property="birthdateContentView" destination="SHG-a3-Tze" id="hDc-xK-opj"/>
                         <outlet property="forceSensitiveCell" destination="gbG-Xg-4i9" id="pdT-Z5-24v"/>
                         <outlet property="forceSensitiveContentView" destination="d1d-E4-F3t" id="hlx-jN-rHG"/>
-                        <outlet property="name" destination="f2l-3t-UVs" id="Dbj-j1-WT8"/>
+                        <outlet property="nameLabel" destination="f2l-3t-UVs" id="Upy-JF-uj5"/>
                         <outlet property="profilePictureImageView" destination="JLG-h1-wX8" id="Lau-pR-naA"/>
                     </connections>
                 </tableViewController>

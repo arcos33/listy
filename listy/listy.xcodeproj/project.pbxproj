@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6A0AC6702F6FA841244C7F25 /* Pods_listy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9B939ACB36CE91B4B672D17 /* Pods_listy.framework */; };
-		CE14FC7A23501A5200B5FCB0 /* StringProtocol + LetterCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE14FC7923501A5200B5FCB0 /* StringProtocol + LetterCase.swift */; };
 		CE14FC7C23504CAB00B5FCB0 /* giphy.gif in Resources */ = {isa = PBXBuildFile; fileRef = CE14FC7B23504CAB00B5FCB0 /* giphy.gif */; };
 		CE65E2A0234FE7B200B0698F /* RESTAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65E29F234FE7B200B0698F /* RESTAPIController.swift */; };
 		CE65E2A2234FF92100B0698F /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65E2A1234FF92100B0698F /* CustomTableViewCell.swift */; };
@@ -22,7 +21,6 @@
 		CE6DD545234FE398008890B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE6DD543234FE398008890B9 /* LaunchScreen.storyboard */; };
 		CE6DD54D234FE4D5008890B9 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */; };
 		CE845D1F2351192E00747DAA /* UViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D1E2351192E00747DAA /* UViewController+Toast.swift */; };
-		CE845D21235128E700747DAA /* UIImage+DataToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D20235128E700747DAA /* UIImage+DataToImage.swift */; };
 		CE845D232351339100747DAA /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D222351339100747DAA /* CoreDataController.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +28,6 @@
 		7B935543B87B886BFC9AC188 /* Pods-listy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-listy.release.xcconfig"; path = "Target Support Files/Pods-listy/Pods-listy.release.xcconfig"; sourceTree = "<group>"; };
 		7BDB48B7C5D08DECB080EF1F /* Pods-listy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-listy.debug.xcconfig"; path = "Target Support Files/Pods-listy/Pods-listy.debug.xcconfig"; sourceTree = "<group>"; };
 		A9B939ACB36CE91B4B672D17 /* Pods_listy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_listy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE14FC7923501A5200B5FCB0 /* StringProtocol + LetterCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringProtocol + LetterCase.swift"; sourceTree = "<group>"; };
 		CE14FC7B23504CAB00B5FCB0 /* giphy.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = giphy.gif; sourceTree = "<group>"; };
 		CE65E29F234FE7B200B0698F /* RESTAPIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTAPIController.swift; sourceTree = "<group>"; };
 		CE65E2A1234FF92100B0698F /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
@@ -46,7 +43,6 @@
 		CE6DD546234FE398008890B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		CE845D1E2351192E00747DAA /* UViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UViewController+Toast.swift"; sourceTree = "<group>"; };
-		CE845D20235128E700747DAA /* UIImage+DataToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+DataToImage.swift"; sourceTree = "<group>"; };
 		CE845D222351339100747DAA /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,8 +111,6 @@
 				CE65E29F234FE7B200B0698F /* RESTAPIController.swift */,
 				CE845D1E2351192E00747DAA /* UViewController+Toast.swift */,
 				CE65E2A323500D9500B0698F /* ProfileDetailTableViewController.swift */,
-				CE14FC7923501A5200B5FCB0 /* StringProtocol + LetterCase.swift */,
-				CE845D20235128E700747DAA /* UIImage+DataToImage.swift */,
 			);
 			path = listy;
 			sourceTree = "<group>";
@@ -241,14 +235,12 @@
 				CE65E2A0234FE7B200B0698F /* RESTAPIController.swift in Sources */,
 				CE845D232351339100747DAA /* CoreDataController.swift in Sources */,
 				CE6DD536234FE396008890B9 /* AppDelegate.swift in Sources */,
-				CE14FC7A23501A5200B5FCB0 /* StringProtocol + LetterCase.swift in Sources */,
 				CE65E2A2234FF92100B0698F /* CustomTableViewCell.swift in Sources */,
 				CE6DD538234FE396008890B9 /* SceneDelegate.swift in Sources */,
 				CE65E2A423500D9500B0698F /* ProfileDetailTableViewController.swift in Sources */,
 				CE6DD54D234FE4D5008890B9 /* MainTableViewController.swift in Sources */,
 				CE845D1F2351192E00747DAA /* UViewController+Toast.swift in Sources */,
 				CE6DD540234FE396008890B9 /* listy.xcdatamodeld in Sources */,
-				CE845D21235128E700747DAA /* UIImage+DataToImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

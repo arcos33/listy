@@ -14,7 +14,8 @@ class MainTableViewController: UITableViewController {
     let cellIdentifier = "cellIdentifier"
     let mainStoryboard = "Main"
     var individuals = [Individual]()
-    var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let coreDataController = CoreDataController()
+
     @IBOutlet weak var mainImageView: FLAnimatedImageView!
     
     override func viewDidLoad() {
@@ -41,7 +42,7 @@ class MainTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         if individuals.isEmpty {
-            let individualRecords = CoreDataController.fetchIndividualRecordsWithContext(appDelegate.persistentContainer.viewContext)
+            let individualRecords = coreDataController.fetchRecords()
             if individualRecords.count > 0 {
                 individuals = individualRecords
                 tableView.reloadData()
@@ -53,53 +54,29 @@ class MainTableViewController: UITableViewController {
             }
         }
     }
-    
-//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if let subview = tableView.tableHeaderView {
-//            var rect = subview.bounds
-//            rect.origin.y = max(0, -scrollView.contentOffset.y)
-//            tableView.tableHeaderView?.bounds = rect
-//        }
-//
-//    }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return individuals.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let individual = individuals[indexPath.row]
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CustomTableViewCell {
-            cell.textLabel?.textAlignment = .right
-            cell.textLabel?.text = individual.name
-//            if let _affiliation = individual.affiliation {
-//                cell.detailTextLabel?.text = _affiliation.rawValue
-//            }
-            cell.textLabel?.textColor = .white
-            cell.imageView?.contentMode = .scaleAspectFill
-            if let imageData = individual.profilePicture {
-                let image = UIImage(data: imageData)
-                cell.imageView?.image = image
-            }
-            cell.imageView?.layer.cornerRadius = cell.frame.height / 2
-            cell.imageView?.clipsToBounds = true
-            cell.backgroundColor = .black
-            return cell
-        } else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CustomTableViewCell else {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             return cell
         }
+        let individual = individuals[indexPath.row]
+        cell.configureCellWith(individual)
+        return cell
+        }
     }
-}
+
 
 //  ==============================================================================
 //  Internal Methods
@@ -113,7 +90,7 @@ extension MainTableViewController {
 extension MainTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: mainStoryboard, bundle: nil)
-        guard let destinationVC = storyboard.instantiateViewController(identifier: "ProfileDetailTableviewController") as? ProfileDetailTableViewController  else { return }
+        guard let destinationVC = storyboard.instantiateViewController(identifier: "ProfileDetailTableviewController") as? ProfileDetailTableViewController else { return }
         let individual = individuals[indexPath.row]
         destinationVC.individual = individual
         
@@ -140,7 +117,7 @@ extension MainTableViewController {
     }
     
     @objc private func didReceiveNotofication(_ notification: Notification) {
-        let individualRecords = CoreDataController.fetchIndividualRecordsWithContext(appDelegate.persistentContainer.viewContext)
+        let individualRecords = coreDataController.fetchRecords()
         DispatchQueue.main.async { [weak self] in
             self?.individuals = individualRecords
             self?.tableView.reloadData()

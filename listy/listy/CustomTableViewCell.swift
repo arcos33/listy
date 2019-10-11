@@ -9,16 +9,17 @@
 import UIKit
 
 class CustomTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func configureCellWith(_ individual: Individual) {
+        textLabel?.text = individual.name
+        textLabel?.textColor = .white
+        imageView?.contentMode = .scaleAspectFill
+        if let imageData = individual.profilePicture {
+            let image = UIImage(data: imageData)
+            imageView?.image = image
+        }
+        imageView?.layer.cornerRadius = frame.height / 2
+        imageView?.clipsToBounds = true
+        backgroundColor = .black
     }
     
     override func layoutSubviews() {
@@ -28,5 +29,4 @@ class CustomTableViewCell: UITableViewCell {
         }
         textLabel?.textAlignment = .center
     }
-
 }
