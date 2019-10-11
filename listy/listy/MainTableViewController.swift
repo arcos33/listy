@@ -7,37 +7,61 @@
 //
 
 import UIKit
-
+import FLAnimatedImage
+import CoreData
 
 class MainTableViewController: UITableViewController {
     let cellIdentifier = "cellIdentifier"
     let mainStoryboard = "Main"
     var individuals = [Individual]()
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    @IBOutlet weak var mainImageView: FLAnimatedImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let api = RESTAPIController.shared
-        api.getIndividualRecords { [unowned self] (_individuals) in
-            self.individuals = _individuals
-            self.tableView.reloadData()
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotofication), name: .didFinishSavingObject, object: nil)
+        
+        if let path1 = Bundle.main.path(forResource: "giphy", ofType: "gif") {
+            let url = URL(fileURLWithPath: path1)
+            do {
+                let gifData = try Data(contentsOf: url)
+                let imageData1 = try? FLAnimatedImage(animatedGIFData: gifData)
+                mainImageView.animatedImage = imageData1
+            } catch {
+                print(error)
+            }
             
-            // Uncomment the following line to preserve selection between presentations
-            // self.clearsSelectionOnViewWillAppear = false
-            
-            // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-            // self.navigationItem.rightBarButtonItem = self.editButtonItem
         }
+        tableView.backgroundView?.backgroundColor = .black
+        tableView.backgroundColor = .black
     }
-    
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBar.barTintColor = .white
-
+        if individuals.isEmpty {
+            let individualRecords = CoreDataController.fetchIndividualRecordsWithContext(appDelegate.persistentContainer.viewContext)
+            if individualRecords.count > 0 {
+                individuals = individualRecords
+                tableView.reloadData()
+            } else {
+                let api = RESTAPIController.shared
+                api.getIndividualRecords { [weak self] in
+                    self?.showToast(message: "Finished fetching all records", font: UIFont.systemFont(ofSize: 12))
+                }
+            }
+        }
     }
+    
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if let subview = tableView.tableHeaderView {
+//            var rect = subview.bounds
+//            rect.origin.y = max(0, -scrollView.contentOffset.y)
+//            tableView.tableHeaderView?.bounds = rect
+//        }
+//
+//    }
 
     // MARK: - Table view data source
 
@@ -57,64 +81,24 @@ class MainTableViewController: UITableViewController {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CustomTableViewCell {
             cell.textLabel?.textAlignment = .right
             cell.textLabel?.text = individual.name
-            if let _affiliation = individual.affiliation {
-                cell.detailTextLabel?.text = _affiliation.rawValue
-            }
+//            if let _affiliation = individual.affiliation {
+//                cell.detailTextLabel?.text = _affiliation.rawValue
+//            }
+            cell.textLabel?.textColor = .white
             cell.imageView?.contentMode = .scaleAspectFill
-            cell.imageView?.image = individual.profilePicture
+            if let imageData = individual.profilePicture {
+                let image = UIImage(data: imageData)
+                cell.imageView?.image = image
+            }
             cell.imageView?.layer.cornerRadius = cell.frame.height / 2
             cell.imageView?.clipsToBounds = true
+            cell.backgroundColor = .black
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             return cell
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
 //  ==============================================================================
@@ -130,7 +114,36 @@ extension MainTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: mainStoryboard, bundle: nil)
         guard let destinationVC = storyboard.instantiateViewController(identifier: "ProfileDetailTableviewController") as? ProfileDetailTableViewController  else { return }
-        destinationVC.individual = individuals[indexPath.row]
+        let individual = individuals[indexPath.row]
+        destinationVC.individual = individual
+        
+        let backgroundView = UIView()
+        if let _affiliation = individual.affiliation {
+            let affiliationColor = getBackgroundColorFor(affiliation: _affiliation)
+            backgroundView.backgroundColor = affiliationColor
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.selectedBackgroundView = backgroundView
+        }
         navigationController?.pushViewController(destinationVC, animated: true)
+    }
+    
+    private func getBackgroundColorFor(affiliation: String) -> UIColor {
+        if affiliation == "FIRST_ORDER" {
+            return .white
+        } else if affiliation == "SITH" {
+            return .red
+        } else if affiliation == "JEDI" {
+            return .blue
+        } else {
+            return .orange
+        }
+    }
+    
+    @objc private func didReceiveNotofication(_ notification: Notification) {
+        let individualRecords = CoreDataController.fetchIndividualRecordsWithContext(appDelegate.persistentContainer.viewContext)
+        DispatchQueue.main.async { [weak self] in
+            self?.individuals = individualRecords
+            self?.tableView.reloadData()
+        }
     }
 }

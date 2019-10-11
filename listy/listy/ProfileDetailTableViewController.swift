@@ -34,7 +34,7 @@ class ProfileDetailTableViewController: UITableViewController {
         
         if let _affiliation = individual?.affiliation {
             setBackgroundColorFor(affiliation: _affiliation)
-            affiliation.text = _affiliation.rawValue
+            affiliation.text = _affiliation
         }
         birthdateCell.textLabel?.text = individual?.birthdate
         forceSensitiveCell.textLabel?.text = "Force Sensitive"
@@ -47,21 +47,24 @@ class ProfileDetailTableViewController: UITableViewController {
         if let dob = individual?.birthdate {
             birthdateCell.detailTextLabel?.text = dob
         }
-        profilePictureImageView.image = individual?.profilePicture
+        
+        if let imageData = individual?.profilePicture {
+            let image = UIImage(data: imageData)
+            profilePictureImageView.image = image
+        }
         name.text = individual?.name
-
+        
         // Do any additional setup after loading the view.
     }
     
-    private func setBackgroundColorFor(affiliation: Affiliation) {
-        switch affiliation {
-        case .firstOrder:
+    func setBackgroundColorFor(affiliation: String) {
+        if affiliation == "FIRST_ORDER" {
             setBackgroundColor(color: .white)
-        case .sith:
+        } else if affiliation == "SITH" {
             setBackgroundColor(color: .red)
-        case .jedi:
+        } else if affiliation == "JEDI" {
             setBackgroundColor(color: .blue)
-        case .resistance:
+        } else {
             setBackgroundColor(color: .orange)
         }
     }
@@ -86,15 +89,4 @@ class ProfileDetailTableViewController: UITableViewController {
             navigationController?.navigationBar.tintColor = .white
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
