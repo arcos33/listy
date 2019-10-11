@@ -21,6 +21,7 @@ class MainTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavBarTitleView()
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotofication), name: .didFinishSavingObject, object: nil)
         
         if let path1 = Bundle.main.path(forResource: "giphy", ofType: "gif") {
@@ -38,9 +39,18 @@ class MainTableViewController: UITableViewController {
         tableView.backgroundColor = .black
     }
     
+    private func setupNavBarTitleView() {
+        let myTitleView = UIImageView(image: UIImage(named: "star-wars-title"))
+         myTitleView.frame.origin = CGPoint(x: 0, y: 0)
+         myTitleView.frame.size = CGSize(width: 80, height: 45)
+         self.navigationItem.titleView = myTitleView
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.navigationBar.barTintColor = .black
+
         if individuals.isEmpty {
             let individualRecords = coreDataController.fetchRecords()
             if individualRecords.count > 0 {
