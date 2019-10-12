@@ -1,5 +1,5 @@
 # Listy
-![Screen Shot 2019-10-11 at 9.44.28 PM](/Users/user/Desktop/Screen Shot 2019-10-11 at 9.44.28 PM.png)
+![Screen Shot 2019-10-11 at 9.44.28 PM](listy/ReadME/Screen Shot 2019-10-11 at 9.44.28 PM.png)
 
 Requirements
 
