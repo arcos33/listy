@@ -14,7 +14,6 @@
 		CE65E2A423500D9500B0698F /* ProfileDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65E2A323500D9500B0698F /* ProfileDetailTableViewController.swift */; };
 		CE6DD536234FE396008890B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD535234FE396008890B9 /* AppDelegate.swift */; };
 		CE6DD538234FE396008890B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD537234FE396008890B9 /* SceneDelegate.swift */; };
-		CE6DD53A234FE396008890B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD539234FE396008890B9 /* ViewController.swift */; };
 		CE6DD53D234FE396008890B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE6DD53B234FE396008890B9 /* Main.storyboard */; };
 		CE6DD540234FE396008890B9 /* listy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD53E234FE396008890B9 /* listy.xcdatamodeld */; };
 		CE6DD542234FE398008890B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE6DD541234FE398008890B9 /* Assets.xcassets */; };
@@ -35,7 +34,6 @@
 		CE6DD532234FE396008890B9 /* listy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = listy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE6DD535234FE396008890B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE6DD537234FE396008890B9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CE6DD539234FE396008890B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CE6DD53C234FE396008890B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE6DD53F234FE396008890B9 /* listy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = listy.xcdatamodel; sourceTree = "<group>"; };
 		CE6DD541234FE398008890B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -96,23 +94,78 @@
 		CE6DD534234FE396008890B9 /* listy */ = {
 			isa = PBXGroup;
 			children = (
-				CE14FC7B23504CAB00B5FCB0 /* giphy.gif */,
-				CE6DD535234FE396008890B9 /* AppDelegate.swift */,
+				CE6DD546234FE398008890B9 /* Info.plist */,
+				CE845D2D2351539000747DAA /* CoreData */,
+				CE845D2923514F6A00747DAA /* SupportFiles */,
+				CE845D2823514F5700747DAA /* Models */,
+				CE845D2723514F3000747DAA /* Resources */,
+				CE845D2623514F1F00747DAA /* Constants */,
+				CE845D2523514EEF00747DAA /*  Resources */,
+				CE845D2423514E9600747DAA /* Extensions */,
 				CE6DD537234FE396008890B9 /* SceneDelegate.swift */,
-				CE6DD539234FE396008890B9 /* ViewController.swift */,
 				CE6DD53B234FE396008890B9 /* Main.storyboard */,
 				CE65E2A1234FF92100B0698F /* CustomTableViewCell.swift */,
 				CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */,
-				CE845D222351339100747DAA /* CoreDataController.swift */,
-				CE6DD541234FE398008890B9 /* Assets.xcassets */,
-				CE6DD543234FE398008890B9 /* LaunchScreen.storyboard */,
-				CE6DD546234FE398008890B9 /* Info.plist */,
-				CE6DD53E234FE396008890B9 /* listy.xcdatamodeld */,
 				CE65E29F234FE7B200B0698F /* RESTAPIController.swift */,
-				CE845D1E2351192E00747DAA /* UViewController+Toast.swift */,
 				CE65E2A323500D9500B0698F /* ProfileDetailTableViewController.swift */,
 			);
 			path = listy;
+			sourceTree = "<group>";
+		};
+		CE845D2423514E9600747DAA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CE845D1E2351192E00747DAA /* UViewController+Toast.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CE845D2523514EEF00747DAA /*  Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = " Resources";
+			sourceTree = "<group>";
+		};
+		CE845D2623514F1F00747DAA /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		CE845D2723514F3000747DAA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE14FC7B23504CAB00B5FCB0 /* giphy.gif */,
+				CE6DD541234FE398008890B9 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CE845D2823514F5700747DAA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CE845D2923514F6A00747DAA /* SupportFiles */ = {
+			isa = PBXGroup;
+			children = (
+				CE6DD535234FE396008890B9 /* AppDelegate.swift */,
+				CE6DD543234FE398008890B9 /* LaunchScreen.storyboard */,
+			);
+			path = SupportFiles;
+			sourceTree = "<group>";
+		};
+		CE845D2D2351539000747DAA /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				CE6DD53E234FE396008890B9 /* listy.xcdatamodeld */,
+				CE845D222351339100747DAA /* CoreDataController.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,7 +284,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE6DD53A234FE396008890B9 /* ViewController.swift in Sources */,
 				CE65E2A0234FE7B200B0698F /* RESTAPIController.swift in Sources */,
 				CE845D232351339100747DAA /* CoreDataController.swift in Sources */,
 				CE6DD536234FE396008890B9 /* AppDelegate.swift in Sources */,
