@@ -1,5 +1,5 @@
 # Listy
-![Screen Shot 2019-10-11 at 9.44.28 PM](ReadME/Screen Shot 2019-10-11 at 9.44.28 PM.png)
+![screenshot](ReadME/screenshot.png)
 
 Requirements
 
