@@ -11,29 +11,33 @@ import UIKit
 import CoreData
 
 class CoreDataController {
-    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func fetchRecords() -> [Individual] {
+    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Individual")
+    
+    func fetchRecordsWith(_ context: NSManagedObjectContext) -> [Individual] {
         var individualRecords = [Individual]()
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Individual")
-        request.returnsObjectsAsFaults = false
+        
         do {
+            request.returnsObjectsAsFaults = false
             if let result = try context.fetch(request) as? [Individual] {
                 individualRecords = result
             }
         } catch let error as NSError {
             print("Failed to fetch records: \(error): \(error.userInfo)")
         }
+        
         return individualRecords
     }
     
-    func saveRecord(id: Int,
-                                                name: String,
-                                                birthdate: String,
-                                                imageData: NSData,
-                                                imageURL: String,
-                                                forceSensitive: Bool,
-                                                affiliation: String) {
+    func saveRecordWith(context: NSManagedObjectContext,
+                    id: Int,
+                    name: String,
+                    birthdate: String,
+                    imageData: NSData,
+                    imageURL: String,
+                    forceSensitive: Bool,
+                    affiliation: String) {
+
         if let individualEntity = NSEntityDescription.entity(forEntityName: "Individual", in: context) {
             let individual = NSManagedObject(entity: individualEntity, insertInto: context)
             individual.setValue(id, forKey: "id")
@@ -50,6 +54,26 @@ class CoreDataController {
             } catch let error as NSError {
                 print("Could not save: \(error), \(error.userInfo)")
             }
+        }
+    }
+    
+    func getCountWith(_ context: NSManagedObjectContext) -> Int {
+        var result = 0
+        
+        do {
+            request.returnsObjectsAsFaults = false
+            result = try context.count(for: request)
+        } catch let error as NSError {
+            print("Error getting count: \(error): \(error.userInfo)")
+        }
+        
+        return result
+    }
+    
+    private func getContext(completion: @escaping (NSManagedObjectContext) -> ()) {
+        DispatchQueue.main.async {
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            completion(delegate.persistentContainer.viewContext)
         }
     }
 }

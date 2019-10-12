@@ -21,6 +21,8 @@
 		CE6DD54D234FE4D5008890B9 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */; };
 		CE845D1F2351192E00747DAA /* UViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D1E2351192E00747DAA /* UViewController+Toast.swift */; };
 		CE845D232351339100747DAA /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D222351339100747DAA /* CoreDataController.swift */; };
+		CE845D32235157AE00747DAA /* URLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D31235157AE00747DAA /* URLConstants.swift */; };
+		CE845D34235158BA00747DAA /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE845D33235158BA00747DAA /* Notification+Name.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		CE845D1E2351192E00747DAA /* UViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UViewController+Toast.swift"; sourceTree = "<group>"; };
 		CE845D222351339100747DAA /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
+		CE845D31235157AE00747DAA /* URLConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstants.swift; sourceTree = "<group>"; };
+		CE845D33235158BA00747DAA /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +106,6 @@
 				CE845D2623514F1F00747DAA /* Constants */,
 				CE845D2523514EEF00747DAA /*  Resources */,
 				CE845D2423514E9600747DAA /* Extensions */,
-				CE6DD537234FE396008890B9 /* SceneDelegate.swift */,
 				CE6DD53B234FE396008890B9 /* Main.storyboard */,
 				CE65E2A1234FF92100B0698F /* CustomTableViewCell.swift */,
 				CE6DD54C234FE4D5008890B9 /* MainTableViewController.swift */,
@@ -116,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				CE845D1E2351192E00747DAA /* UViewController+Toast.swift */,
+				CE845D33235158BA00747DAA /* Notification+Name.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -130,6 +134,7 @@
 		CE845D2623514F1F00747DAA /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				CE845D31235157AE00747DAA /* URLConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 		CE845D2923514F6A00747DAA /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				CE6DD537234FE396008890B9 /* SceneDelegate.swift */,
 				CE6DD535234FE396008890B9 /* AppDelegate.swift */,
 				CE6DD543234FE398008890B9 /* LaunchScreen.storyboard */,
 			);
@@ -285,6 +291,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE65E2A0234FE7B200B0698F /* RESTAPIController.swift in Sources */,
+				CE845D34235158BA00747DAA /* Notification+Name.swift in Sources */,
+				CE845D32235157AE00747DAA /* URLConstants.swift in Sources */,
 				CE845D232351339100747DAA /* CoreDataController.swift in Sources */,
 				CE6DD536234FE396008890B9 /* AppDelegate.swift in Sources */,
 				CE65E2A2234FF92100B0698F /* CustomTableViewCell.swift in Sources */,

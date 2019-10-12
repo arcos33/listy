@@ -9,31 +9,13 @@
 import UIKit
 import CoreData
 
-struct IndividualStruct {
-    var id: Int?
-    var name: String?
-    var birthdate: String?
-    var profilePicture: UIImage?
-    var imageURL: String?
-    var forceSensitive: Bool?
-    var affiliation: Affiliation?
-    var imageData: NSData?
-}
-
-extension Notification.Name {
-    static let didFinishSavingObject =  Notification.Name("didFinishSavingObject")
-}
-
 class RESTAPIController {
     static let shared = RESTAPIController()
-    let webServiceURL = "https://edge.ldscdn.org/mobile/interview/directory"
     lazy var configuration: URLSessionConfiguration = URLSessionConfiguration.default
     lazy var session: URLSession = URLSession(configuration: self.configuration)
-    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getIndividualRecords(completion: @escaping () -> ()) {
-        let urlString = webServiceURL
-        let url = NSURL(string: urlString)
+        let url = NSURL(string: BaseURL.main)
         let request = NSURLRequest(url: url! as URL)
         let dataTask = self.session.dataTask(with: (request as URLRequest)) { (data, response, error) in
             if error == nil {
@@ -54,7 +36,7 @@ class RESTAPIController {
         dataTask.resume()
     }
     
-    func parseJson(data: NSData, completion: @escaping () -> ()) {
+    private func parseJson(data: NSData, completion: @escaping () -> ()) {
         do {
             let jsonResponse = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments)
             let jsonDict = jsonResponse as! Dictionary<String, AnyObject>
@@ -73,8 +55,21 @@ class RESTAPIController {
                     let affiliation = dict["affiliation"] as? String {
                     let name = "\(firstName) \(lastName)"
                     getImageWithURL(imageURL: imageURL) { imageData in
-                            let coreDataController = CoreDataController()
-                            coreDataController.saveRecord(id: id, name: name, birthdate: birthdate, imageData: imageData, imageURL: imageURL, forceSensitive: forceSensitive, affiliation: affiliation)
+                        
+                        let coreDataController = CoreDataController()
+                        DispatchQueue.main.async {
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            let context = appDelegate.persistentContainer.viewContext
+                            coreDataController.saveRecordWith(context: context,
+                                                            id: id,
+                                                          name: name,
+                                                          birthdate: birthdate,
+                                                          imageData: imageData,
+                                                          imageURL: imageURL,
+                                                          forceSensitive: forceSensitive,
+                                                          affiliation: affiliation)
+                        }
+
                         group.leave()
                     }
                 }
@@ -88,7 +83,7 @@ class RESTAPIController {
         }
     }
     
-    func getImageWithURL(imageURL: String, completion: @escaping (NSData) -> ()) {
+    private func getImageWithURL(imageURL: String, completion: @escaping (NSData) -> ()) {
         let urlString = imageURL
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(url: url as URL)

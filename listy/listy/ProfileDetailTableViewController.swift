@@ -8,15 +8,7 @@
 
 import UIKit
 
-enum Affiliation: String {
-    case firstOrder = "First Order"
-    case sith = "Sith"
-    case jedi = "Jedi"
-    case resistance = "Resistance"
-}
-
 class ProfileDetailTableViewController: UITableViewController {
-    
     @IBOutlet weak var forceSensitiveCell: UITableViewCell!
     @IBOutlet weak var birthdateCell: UITableViewCell!
     @IBOutlet weak var affiliationLabel: UILabel!
@@ -24,71 +16,83 @@ class ProfileDetailTableViewController: UITableViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var birthdateContentView: UIView!
     @IBOutlet weak var forceSensitiveContentView: UIView!
-    
-    
+
     var individual: Individual?
+    var affiliation: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         populateOutlets()
     }
-    
+}
+
+//  ==============================================================================
+//  Private Methods
+//  ==============================================================================
+extension ProfileDetailTableViewController {
     private func populateOutlets() {
-        birthdateCell.textLabel?.text = individual?.birthdate
-        forceSensitiveCell.textLabel?.text = "Force Sensitive"
+        populateLabels()
+        populateImageViews()
+        setColorThemeFor(affiliation: affiliation ?? "rogue")
+    }
+    
+    private func populateImageViews() {
         forceSensitiveCell.imageView?.image = UIImage(imageLiteralResourceName: "force-Jedi-symbol")
         birthdateCell.imageView?.image = UIImage(imageLiteralResourceName: "cake")
-        if let _forceSensitive = individual?.forceSensitive {
-            forceSensitiveCell.detailTextLabel?.text = _forceSensitive == true ? "Yes" : "No"
-        }
-        birthdateCell.textLabel?.text = "Birthdate"
-        if let dob = individual?.birthdate {
-            birthdateCell.detailTextLabel?.text = dob
-        }
-        
         if let imageData = individual?.profilePicture {
             let image = UIImage(data: imageData)
             profilePictureImageView.image = image
         }
+    }
+    
+    private func populateLabels() {
         nameLabel.text = individual?.name
-        
+        birthdateCell.textLabel?.text = "Birthdate"
+        birthdateCell.textLabel?.text = individual?.birthdate
+        forceSensitiveCell.textLabel?.text = "Force Sensitive"
+        if let dob = individual?.birthdate {
+            birthdateCell.detailTextLabel?.text = dob
+        }
+        if let _forceSensitive = individual?.forceSensitive {
+            forceSensitiveCell.detailTextLabel?.text = _forceSensitive == true ? "Yes" : "No"
+        }
         if let _affiliation = individual?.affiliation {
-            setBackgroundColorFor(affiliation: _affiliation)
+            affiliation = _affiliation
             affiliationLabel.text = _affiliation
         }
     }
     
-    private func setBackgroundColorFor(affiliation: String) {
+    private func setColorThemeFor(affiliation: String) {
         if affiliation == "FIRST_ORDER" {
-            setBackgroundColor(color: .white)
+            stylizeUI(color: .white)
         } else if affiliation == "SITH" {
-            setBackgroundColor(color: .red)
+            stylizeUI(color: .red)
         } else if affiliation == "JEDI" {
-            setBackgroundColor(color: .blue)
+            stylizeUI(color: .blue)
         } else {
-            setBackgroundColor(color: .orange)
+            stylizeUI(color: .orange)
         }
     }
     
-    private func setBackgroundColor(color: UIColor) {
+    private func stylizeUI(color: UIColor) {
         tableView.backgroundView?.backgroundColor = color
         tableView.backgroundColor = color
         navigationController?.navigationBar.barTintColor = color
         birthdateContentView.backgroundColor = color
         forceSensitiveContentView.backgroundColor = color
         if color == .white {
-            forceSensitiveCell.textLabel?.textColor = .black
-            forceSensitiveCell.detailTextLabel?.textColor = .black
-            birthdateCell.textLabel?.textColor = .black
-            birthdateCell.detailTextLabel?.textColor = .black
-            navigationController?.navigationBar.tintColor = .black
+            stylizeNavBarAndTextForBestContrastWith(.black)
         } else {
-            forceSensitiveCell.textLabel?.textColor = .white
-            forceSensitiveCell.detailTextLabel?.textColor = .white
-            birthdateCell.textLabel?.textColor = .white
-            birthdateCell.detailTextLabel?.textColor = .white
-            navigationController?.navigationBar.tintColor = .white
+            stylizeNavBarAndTextForBestContrastWith(.white)
         }
+    }
+    
+    private func stylizeNavBarAndTextForBestContrastWith(_ color: UIColor) {
+        forceSensitiveCell.textLabel?.textColor = color
+        forceSensitiveCell.detailTextLabel?.textColor = color
+        birthdateCell.textLabel?.textColor = color
+        birthdateCell.detailTextLabel?.textColor = color
+        navigationController?.navigationBar.tintColor = color
     }
 }
