@@ -13,18 +13,17 @@ import CoreData
 class MainTableViewController: UITableViewController {
     let cellIdentifier = "cellIdentifier"
     let mainStoryboard = "Main"
-    var individuals = [Individual]()
+    var individualsArray = [Individual]()
     let coreDataController = CoreDataController()
-    var context: NSManagedObjectContext?
     
     @IBOutlet weak var mainImageView: FLAnimatedImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupContext()
         setupNavBarTitleView()
         setupGIF()
+        getDataForTableView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotofication), name: .didFinishSavingObject, object: nil)
     }
@@ -33,17 +32,6 @@ class MainTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         stylizeTableViewAndNavBar()
-        
-        if individuals.isEmpty {
-            if savedRecordsExist() {
-                if let context = context {
-                    individuals = coreDataController.fetchRecordsWith(context)
-                    tableView.reloadData()
-                }
-            } else {
-                getRecordsFromWebService()
-            }
-        }
     }
 }
 
@@ -51,40 +39,27 @@ class MainTableViewController: UITableViewController {
 //  Private Methods
 //  ==============================================================================
 extension MainTableViewController {
-    private func getBackgroundColorFor(affiliation: String) -> UIColor {
-        if affiliation == "FIRST_ORDER" {
-            return .white
-        } else if affiliation == "SITH" {
-            return .red
-        } else if affiliation == "JEDI" {
-            return .blue
-        } else {
-            return .orange
-        }
-    }
-    
-    @objc private func didReceiveNotofication(_ notification: Notification) {
-        if let context = context {
-            let individualRecords = coreDataController.fetchRecordsWith(context)
-            DispatchQueue.main.async { [weak self] in
-                self?.individuals = individualRecords
-                self?.tableView.reloadData()
+    private func getDataForTableView() {
+        if individualsArray.isEmpty {
+            if coreDataController.savedRecordsExist() {
+                fetchRecords()
+            } else {
+                getRecordsFromWebService()
             }
         }
     }
     
-    private func setupContext() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        context = appDelegate.persistentContainer.viewContext
+    private func fetchRecords() {
+            individualsArray = coreDataController.fetchRecords()
+            tableView.reloadData()
     }
     
-    private func savedRecordsExist() -> Bool {
-        guard let context = context else { return false }
-        if coreDataController.getCountWith(context) > 0 {
-            return true
-        } else {
-            return false
-        }
+    @objc private func didReceiveNotofication(_ notification: Notification) {
+            let individualRecords = coreDataController.fetchRecords()
+            DispatchQueue.main.async { [weak self] in
+                self?.individualsArray = individualRecords
+                self?.tableView.reloadData()
+            }
     }
     
     private func getRecordsFromWebService() {
@@ -118,16 +93,6 @@ extension MainTableViewController {
         myTitleView.frame.size = CGSize(width: 80, height: 45)
         self.navigationItem.titleView = myTitleView
     }
-    
-    private func setCellColorForAffiliation(_ individual: Individual, _ indexPath: IndexPath) {
-        if let _affiliation = individual.affiliation {
-            let affiliationColor = getBackgroundColorFor(affiliation: _affiliation)
-            let backgroundView = UIView()
-            backgroundView.backgroundColor = affiliationColor
-            let cell = tableView.cellForRow(at: indexPath)
-            cell?.selectedBackgroundView = backgroundView
-        }
-    }
 }
 
 //  ==============================================================================
@@ -143,7 +108,7 @@ extension MainTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return individuals.count
+        return individualsArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -151,7 +116,7 @@ extension MainTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             return cell
         }
-        let individual = individuals[indexPath.row]
+        let individual = individualsArray[indexPath.row]
         cell.configureCellWith(individual)
         return cell
     }
@@ -164,10 +129,11 @@ extension MainTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard.init(name: mainStoryboard, bundle: nil)
         guard let destinationVC = storyboard.instantiateViewController(identifier: "ProfileDetailTableviewController") as? ProfileDetailTableViewController else { return }
-        let individual = individuals[indexPath.row]
+        let individual = individualsArray[indexPath.row]
+        if let cell = tableView.cellForRow(at: indexPath) as? CustomTableViewCell, let affiliation = individual.affiliation {
+            cell.setColorForAffiliation(affiliation: affiliation)
+        }
         destinationVC.individual = individual
-        
-        setCellColorForAffiliation(individual, indexPath)
         navigationController?.pushViewController(destinationVC, animated: true)
     }
 }

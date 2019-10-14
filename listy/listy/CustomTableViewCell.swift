@@ -29,4 +29,23 @@ class CustomTableViewCell: UITableViewCell {
         }
         textLabel?.textAlignment = .center
     }
+    
+    func setColorForAffiliation(affiliation: String) {
+        let affiliationColor = getBackgroundColorFor(affiliation: affiliation)
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = affiliationColor
+        selectedBackgroundView = backgroundView
+    }
+    
+    private func getBackgroundColorFor(affiliation: String) -> UIColor {
+        if affiliation == Affiliation.firstOrder.rawValue {
+            return .white
+        } else if affiliation == Affiliation.sith.rawValue {
+            return .red
+        } else if affiliation == Affiliation.jedi.rawValue {
+            return .blue
+        } else {
+            return .orange
+        }
+    }
 }

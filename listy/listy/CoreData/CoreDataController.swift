@@ -12,9 +12,16 @@ import CoreData
 
 class CoreDataController {
     
-    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Individual")
+    var request: NSFetchRequest<NSFetchRequestResult>
+    var context: NSManagedObjectContext
     
-    func fetchRecordsWith(_ context: NSManagedObjectContext) -> [Individual] {
+    init() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        context = appDelegate.persistentContainer.viewContext
+        request = NSFetchRequest<NSFetchRequestResult>(entityName: "Individual")
+    }
+    
+    func fetchRecords() -> [Individual] {
         var individualRecords = [Individual]()
         
         do {
@@ -29,8 +36,7 @@ class CoreDataController {
         return individualRecords
     }
     
-    func saveRecordWith(context: NSManagedObjectContext,
-                    id: Int,
+    func saveRecordWith(id: Int,
                     name: String,
                     birthdate: String,
                     imageData: NSData,
@@ -57,7 +63,7 @@ class CoreDataController {
         }
     }
     
-    func getCountWith(_ context: NSManagedObjectContext) -> Int {
+    func recordCount() -> Int {
         var result = 0
         
         do {
@@ -66,7 +72,6 @@ class CoreDataController {
         } catch let error as NSError {
             print("Error getting count: \(error): \(error.userInfo)")
         }
-        
         return result
     }
     
@@ -74,6 +79,14 @@ class CoreDataController {
         DispatchQueue.main.async {
             let delegate = UIApplication.shared.delegate as! AppDelegate
             completion(delegate.persistentContainer.viewContext)
+        }
+    }
+    
+    func savedRecordsExist() -> Bool {
+        if recordCount() > 0 {
+            return true
+        } else {
+            return false
         }
     }
 }

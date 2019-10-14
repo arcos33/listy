@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum Affiliation: String {
+    case firstOrder = "FIRST_ORDER"
+    case sith = "SITH"
+    case jedi = "JEDI"
+    case rebels = "REBELS"
+}
+
 class ProfileDetailTableViewController: UITableViewController {
     @IBOutlet weak var forceSensitiveCell: UITableViewCell!
     @IBOutlet weak var birthdateCell: UITableViewCell!
@@ -18,11 +25,26 @@ class ProfileDetailTableViewController: UITableViewController {
     @IBOutlet weak var forceSensitiveContentView: UIView!
 
     var individual: Individual?
-    var affiliation: String?
+    var affiliation: Affiliation? {
+        didSet {
+            switch affiliation {
+            case .firstOrder:
+                stylizeUI(color: .white)
+            case .sith:
+                stylizeUI(color: .red)
+            case .jedi:
+                stylizeUI(color: .blue)
+            case .rebels:
+                stylizeUI(color: .orange)
+            case .none:
+                print("rogue")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        affiliation = convertAffiliation(individual?.affiliation ?? "rogue")
         populateOutlets()
     }
 }
@@ -34,7 +56,18 @@ extension ProfileDetailTableViewController {
     private func populateOutlets() {
         populateLabels()
         populateImageViews()
-        setColorThemeFor(affiliation: affiliation ?? "rogue")
+    }
+    
+    private func convertAffiliation(_ str: String) -> Affiliation {
+        if str == Affiliation.firstOrder.rawValue {
+            return Affiliation.firstOrder
+        } else if str == Affiliation.sith.rawValue {
+            return Affiliation.sith
+        } else if str == Affiliation.jedi.rawValue {
+            return Affiliation.jedi
+        } else {
+            return Affiliation.rebels
+        }
     }
     
     private func populateImageViews() {
@@ -58,20 +91,7 @@ extension ProfileDetailTableViewController {
             forceSensitiveCell.detailTextLabel?.text = _forceSensitive == true ? "Yes" : "No"
         }
         if let _affiliation = individual?.affiliation {
-            affiliation = _affiliation
             affiliationLabel.text = _affiliation
-        }
-    }
-    
-    private func setColorThemeFor(affiliation: String) {
-        if affiliation == "FIRST_ORDER" {
-            stylizeUI(color: .white)
-        } else if affiliation == "SITH" {
-            stylizeUI(color: .red)
-        } else if affiliation == "JEDI" {
-            stylizeUI(color: .blue)
-        } else {
-            stylizeUI(color: .orange)
         }
     }
     

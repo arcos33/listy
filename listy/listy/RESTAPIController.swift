@@ -43,7 +43,11 @@ class RESTAPIController {
             let arrayOfDictionaries = jsonDict["individuals"] as! [Dictionary<String, AnyObject>]
             
             let group = DispatchGroup()
-            
+            var coreDataController: CoreDataController?
+            DispatchQueue.main.async {
+                coreDataController = CoreDataController()
+            }
+
             for dict in arrayOfDictionaries {
                 group.enter()
                 if let id = dict["id"] as? Int,
@@ -55,22 +59,17 @@ class RESTAPIController {
                     let affiliation = dict["affiliation"] as? String {
                     let name = "\(firstName) \(lastName)"
                     getImageWithURL(imageURL: imageURL) { imageData in
-                        
-                        let coreDataController = CoreDataController()
                         DispatchQueue.main.async {
-                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                            let context = appDelegate.persistentContainer.viewContext
-                            coreDataController.saveRecordWith(context: context,
-                                                            id: id,
-                                                          name: name,
-                                                          birthdate: birthdate,
-                                                          imageData: imageData,
-                                                          imageURL: imageURL,
-                                                          forceSensitive: forceSensitive,
-                                                          affiliation: affiliation)
+                            coreDataController?.saveRecordWith(id: id,
+                                                              name: name,
+                                                              birthdate: birthdate,
+                                                              imageData: imageData,
+                                                              imageURL: imageURL,
+                                                              forceSensitive: forceSensitive,
+                                                              affiliation: affiliation)
+                            group.leave()
                         }
-
-                        group.leave()
+                        
                     }
                 }
             }
@@ -81,6 +80,10 @@ class RESTAPIController {
         catch {
             print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
         }
+    }
+    
+    private func saveRecordToCoreData() {
+        
     }
     
     private func getImageWithURL(imageURL: String, completion: @escaping (NSData) -> ()) {
